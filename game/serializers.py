@@ -8,3 +8,13 @@ class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameSession
         fields = ["id","name","password"]
+
+class SessionSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = GameSession
+        fields = ["id","name","password","admin"]
+
+
+class AddUserToSessionSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField() 
+    game_session_id = serializers.IntegerField() 

@@ -9,7 +9,7 @@ class GameSession(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=255)
     password = models.CharField(max_length=255, null=True)
-    admin = models.ForeignKey(User, on_delete=CASCADE)
+    admin = models.OneToOneField(User, on_delete=CASCADE, null=True)
     # One to Many relasnsip
     #users = models.
 
@@ -20,11 +20,11 @@ class Player(models.Model):
     
     # If user only be deleted if associated player deleted
     # One to One
-    userId = models.OneToOneField(User, on_delete=models.PROTECT)
+    userId = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # If session is deleted, this player will be also deleted
     # One to Many
-    session_at = models.ForeignKey(GameSession,on_delete=models.CASCADE)
+    session_at = models.OneToOneField(GameSession,on_delete=models.CASCADE)
 
 
     def addPlayer(self, user : User):

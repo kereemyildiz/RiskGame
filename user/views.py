@@ -2,10 +2,12 @@ from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework import status
-from .serializers import UserSerializer, RegisterSerializer
+from .serializers import UserSerializer, RegisterSerializer,LoginSerializer
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from django.contrib.auth import login, logout
 # Create your views here.
 # Register API
 class GetUser(GenericAPIView):
@@ -36,3 +38,27 @@ class RegisterUser(GenericAPIView):
         },
         status=status.HTTP_201_CREATED
         )
+
+
+class LoginUser(GenericAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = LoginSerializer
+    def get(self, request):
+        return Response("ok")
+    def post(self, request):
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        
+        return Response("Login", status=status.HTTP_202_ACCEPTED)
+        
+        #return super(LoginUser, self).post(request, format=None)
+
+class LogoutUser(GenericAPIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        logout(request)
+        return Response("Logouted", status=status.HTTP_202_ACCEPTED)

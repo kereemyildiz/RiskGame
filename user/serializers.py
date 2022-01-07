@@ -1,3 +1,5 @@
+from django.contrib.auth import models
+from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
@@ -18,3 +20,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(validated_data['username'], validated_data['email'], validated_data['password'])
 
         return user
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("username", "password")

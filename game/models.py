@@ -20,11 +20,11 @@ class Player(models.Model):
     
     # If user only be deleted if associated player deleted
     # One to One
-    userId = models.OneToOneField(User, on_delete=models.CASCADE)
+    userId = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # If session is deleted, this player will be also deleted
     # One to Many
-    session_at = models.OneToOneField(GameSession,on_delete=models.CASCADE)
+    session_at = models.ForeignKey(GameSession,on_delete=models.CASCADE)
 
 
     def addPlayer(self, user : User):

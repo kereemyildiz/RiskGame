@@ -5,7 +5,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .serializers import UserSerializer, RegisterSerializer
-from rest_framework.decorators import api_view
+from rest_framework.authtoken.models import Token
 # Create your views here.
 # Register API
 class GetUser(GenericAPIView):
@@ -29,8 +29,10 @@ class RegisterUser(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        token = Token.objects.create(user=user)
         return Response({
         "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        "token": token.key
         },
         status=status.HTTP_201_CREATED
         )

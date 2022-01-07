@@ -8,7 +8,7 @@ from .serializers import UserSerializer, RegisterSerializer
 from rest_framework.decorators import api_view
 # Create your views here.
 # Register API
-class RegisterUser_test(GenericAPIView):
+class GetUser(GenericAPIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -31,14 +31,6 @@ class RegisterUser(GenericAPIView):
         user = serializer.save()
         return Response({
         "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        })
-
-@api_view(["GET","POST"])
-def product_list(request):
-    if request.method == "GET":
-       
-        return Response("ok")
-    elif request.method == "POST":
-
-        
-        return Response("ok",status=status.HTTP_201_CREATED)
+        },
+        status=status.HTTP_201_CREATED
+        )

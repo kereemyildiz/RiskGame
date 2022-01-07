@@ -21,4 +21,5 @@ urlpatterns = [
     #path('user/', admin.site.urls),
     path('user/', include('user.url')),
     path('test2/', include('test2.url')),
+    path('game/', include('game.url')),
 ]
